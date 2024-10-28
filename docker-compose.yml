@@ -1,0 +1,30 @@
+version: '3.4'
+networks:
+  ToDoApp:
+services:
+  ToDoAppdb:
+    container_name: ToDoAppDb
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    ports:
+     - 8002:1433
+    environment:
+     - ACCEPT_EULA=Y
+     - MSSQL_SA_PASSWORD=P@ssq0rd12345
+    networks:
+     - ToDoApp
+  todoapi:
+    container_name: ToDoAPI-app
+    image: ${DOCKER_REGISTRY-}todoapi
+    build:
+      context: .
+      dockerfile: ToDoAPI/Dockerfile
+    ports:
+     - 8001:80
+    depends_on:
+     - ToDoAppdb
+    environment:
+     - DB_HOST=ToDoAppdb
+     - DB_NAME=ToDoApp
+     - DB_SA_PASSWORD=P@ssq0rd12345
+    networks:
+     - ToDoApp
