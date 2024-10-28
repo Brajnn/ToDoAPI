@@ -19,7 +19,8 @@ services:
       context: .
       dockerfile: ToDoAPI/Dockerfile
     ports:
-     - 8001:80
+     - 8080:8080
+     - 8081:8081
     depends_on:
      - ToDoAppdb
     environment:
